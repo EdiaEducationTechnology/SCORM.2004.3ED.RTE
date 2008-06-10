@@ -50,12 +50,12 @@
 			<version>1.2</version>
 		</dependency>	
 		
-		<dependency>
+		<!--dependency>
 			<groupId>plugin</groupId>
 			<artifactId>plugin</artifactId>
 			<jar>plugin.jar</jar>
 			<type>jar</type>
-		</dependency>
+		</dependency-->
 		
 		<dependency>
 			<id>joda:time</id>

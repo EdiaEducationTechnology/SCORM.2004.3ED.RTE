@@ -1,0 +1,7 @@
+To build using maven 1 (for sakai 2-4-x), you'll need to include the following steps:
+
+(1) Check out entitybroker from https://source.sakaiproject.org/svn/entitybroker/tags/1.2 and build it
+
+(2) Check out sakai-wicket from https://source.sakaiproject.org/contrib/wicket/sakai-wicket/trunk/ -- it now includes a project.xml
+as of Jun 10, 2008.
+
