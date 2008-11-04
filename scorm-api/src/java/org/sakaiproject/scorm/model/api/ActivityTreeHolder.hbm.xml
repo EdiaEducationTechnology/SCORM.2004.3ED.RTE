@@ -15,7 +15,7 @@
 		<property name="learnerId" column="LEARNER_ID" />
 		
 		<property type="serializable" name="seqActivityTree">
-			<column name="ACT_TREE" sql-type="blob"/>
+			<column name="ACT_TREE" length="2147483647"/>
 		</property>
 		
 	</class>
