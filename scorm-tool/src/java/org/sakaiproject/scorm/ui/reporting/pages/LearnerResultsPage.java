@@ -23,6 +23,9 @@ package org.sakaiproject.scorm.ui.reporting.pages;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.adl.sequencer.ISeqActivity;
+import org.adl.sequencer.ISeqActivityTree;
+import org.adl.sequencer.SeqActivity;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -32,9 +35,13 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.sakaiproject.scorm.dao.api.ContentPackageManifestDao;
 import org.sakaiproject.scorm.model.api.ActivitySummary;
 import org.sakaiproject.scorm.model.api.ContentPackage;
+import org.sakaiproject.scorm.model.api.ContentPackageManifest;
 import org.sakaiproject.scorm.model.api.Learner;
+import org.sakaiproject.scorm.service.api.ScormSequencingService;
 import org.sakaiproject.scorm.ui.console.pages.DisplayDesignatedPackage;
 import org.sakaiproject.scorm.ui.console.pages.PackageListPage;
 import org.sakaiproject.scorm.ui.reporting.util.SummaryProvider;
@@ -44,6 +51,9 @@ import org.sakaiproject.wicket.markup.html.repeater.data.table.Action;
 import org.sakaiproject.wicket.markup.html.repeater.data.table.ActionColumn;
 
 public class LearnerResultsPage extends BaseResultsPage {
+
+	@SpringBean(name = "org.sakaiproject.scorm.dao.api.ContentPackageManifestDao")
+	ContentPackageManifestDao contentPackageManifestDao;
 
 	private static final long serialVersionUID = 1L;
 
@@ -85,6 +95,24 @@ public class LearnerResultsPage extends BaseResultsPage {
 		addBreadcrumb(new Model(learner.getDisplayName()), LearnerResultsPage.class, parentParams, false);
 		
 		List<ActivitySummary> summaries = resultService.getActivitySummaries(contentPackage.getContentPackageId(), learner.getId(), attemptNumber);
+
+		ContentPackageManifest manifest = contentPackageManifestDao.load(contentPackage.getManifestId());
+		ISeqActivityTree actTreePrototype = manifest.getActTreePrototype();
+
+		for(ActivitySummary summary: summaries){
+			StringBuilder title = new StringBuilder("");
+			ISeqActivity activity = actTreePrototype.getActivity(summary.getScoId());
+			if(activity instanceof SeqActivity){
+				SeqActivity parent = ((SeqActivity) activity).getParent();
+				while(parent != null){
+					title.replace(0, 0, parent.getTitle() + " - " );
+					parent = parent.getParent();
+				}
+			}
+			title.append(summary.getTitle());
+			summary.setTitle(title.toString());
+		}
+
 		SummaryProvider dataProvider = new SummaryProvider(summaries);
 		dataProvider.setTableTitle(getLocalizer().getString("table.title", this));
 		EnhancedDataPresenter presenter = new EnhancedDataPresenter("summaryPresenter", getColumns(), dataProvider);
