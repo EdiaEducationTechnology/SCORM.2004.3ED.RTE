@@ -230,7 +230,6 @@ public class LearnerResultsPage extends BaseResultsPage {
 	private List<IColumn> getColumns() {
 		IModel titleHeader = new ResourceModel("column.header.title");
 		IModel scoreHeader = new ResourceModel("column.header.score");
-		IModel completedHeader = new ResourceModel("column.header.completed");
 		IModel successHeader = new ResourceModel("column.header.success");
 		
 		
@@ -243,9 +242,7 @@ public class LearnerResultsPage extends BaseResultsPage {
 		columns.add(actionColumn);
 		
 		columns.add(new PercentageColumn(scoreHeader, "scaled", "scaled"));
-		
-		columns.add(new PropertyColumn(completedHeader, "completionStatus", "completionStatus"));
-		
+				
 		columns.add(new PropertyColumn(successHeader, "successStatus", "successStatus"));
 				
 		return columns;

@@ -184,4 +184,10 @@
 			height:2px; 
 			margin:0 1px;
 		}
+		.navIntraTool {
+			visibility: none!important;
+		}
+		.navPanel { 
+			margin: 5px 5px 0 0;
+		}
 		

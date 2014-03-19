@@ -134,7 +134,9 @@ public abstract class SakaiLearnerDaoImpl implements LearnerDao {
 					try {
 						User user = userDirectoryService().getUserByEid(member.getUserEid());
 						String userId = user.getId();
-						addLearner(userId, user, learnerMap);
+                        if(!"beheerder".equals(user.getType())){
+						    addLearner(userId, user, learnerMap);
+                        }
 
 					} catch (UserNotDefinedException e) {
 						// deal with missing user quietly without throwing a warning message
