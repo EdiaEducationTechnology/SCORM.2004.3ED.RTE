@@ -124,42 +124,6 @@ public class LearnerResultsPage extends BaseResultsPage {
 		Link link = new BookmarkablePageLabeledLink("previousLink", new ResourceModel("previous.link.label"), LearnerResultsPage.class, prevParams);
 		link.setVisible(StringUtils.isNotEmpty(previousId));
 		return link;
-		
-		/*PageParameters prevParams = new PageParameters();
-		
-		long contentPackageId = pageParams.getLong("contentPackageId");
-		String learnerId = pageParams.getString("learnerId");
-		
-		prevParams.put("contentPackageId", contentPackageId);
-		
-		String previousLearnerIds = pageParams.getString("previousLearnerIds");
-		String nextLearnerIds = pageParams.getString("nextLearnerIds");
-		
-		if (previousLearnerIds == null)
-			previousLearnerIds = "";
-		
-		boolean showPrevious = false;
-
-		if (StringUtils.isNotEmpty(previousLearnerIds)) {
-			int indexOf = previousLearnerIds.indexOf(',');
-			String currentLearnerId = previousLearnerIds.substring(0, indexOf);
-			
-			prevParams.put("learnerId", currentLearnerId);
-			
-			if (indexOf + 1 < previousLearnerIds.length()) 
-				prevParams.put("previousLearnerIds", previousLearnerIds.substring(indexOf+1));
-			
-			String nextIds = new StringBuilder().append(learnerId).append(",").append(nextLearnerIds).toString();
-		
-			prevParams.put("nextLearnerIds", nextIds);
-			showPrevious = true;
-		}
-		
-		Link link = new BookmarkablePageLabeledLink("previousLink", new ResourceModel("previous.link.label"), LearnerResultsPage.class, prevParams);
-	
-		link.setVisible(showPrevious);
-		
-		return link;*/
 	}
 	
 	@Override
@@ -175,45 +139,6 @@ public class LearnerResultsPage extends BaseResultsPage {
 
 		link.setVisible(StringUtils.isNotBlank(nextId));
 		return link;
-		
-		/*PageParameters nextParams = new PageParameters();
-		
-		long contentPackageId = pageParams.getLong("contentPackageId");
-		String learnerId = pageParams.getString("learnerId");
-		
-		nextParams.put("contentPackageId", contentPackageId);
-		
-		String previousLearnerIds = pageParams.getString("previousLearnerIds");
-		String nextLearnerIds = pageParams.getString("nextLearnerIds");
-		
-		if (previousLearnerIds == null)
-			previousLearnerIds = "";
-		if (nextLearnerIds == null)
-			nextLearnerIds = "";
-
-		boolean showNext = false;
-			
-		if (StringUtils.isNotBlank(nextLearnerIds)) {
-			int indexOf = nextLearnerIds.indexOf(',');
-			String currentLearnerId = nextLearnerIds.substring(0, indexOf);
-			
-			nextParams.put("learnerId", currentLearnerId);
-			
-			if (indexOf + 1 < nextLearnerIds.length())
-				nextParams.put("nextLearnerIds", nextLearnerIds.substring(indexOf + 1));
-			
-			String prevIds = new StringBuilder().append(learnerId).append(",").append(previousLearnerIds).toString();
-			
-			nextParams.put("previousLearnerIds", prevIds);
-			showNext = true;
-		}
-		
-		
-		Link link = new BookmarkablePageLabeledLink("nextLink", new ResourceModel("next.link.label"), LearnerResultsPage.class, nextParams);
-	
-		link.setVisible(showNext);
-		
-		return link;*/
 	}
 	
 	

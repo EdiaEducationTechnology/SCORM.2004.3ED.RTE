@@ -217,7 +217,7 @@ public abstract class BaseResultsPage extends ConsoleBasePage {
 			String percentage = "" + p + " %";
 			
 			if (d < 0.0)
-				percentage = "Not available";
+				percentage = "Nog niet afgerond";
 			
 			return percentage;
 		}

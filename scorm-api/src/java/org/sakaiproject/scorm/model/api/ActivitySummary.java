@@ -2,6 +2,8 @@ package org.sakaiproject.scorm.model.api;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang.StringUtils;
+
 public class ActivitySummary implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -100,6 +102,13 @@ public class ActivitySummary implements Serializable {
 	}
 
 	public String getSuccessStatus() {
+		//BOOMSAK-410 requires in code change as no i18n is used.
+		if(StringUtils.equals("passed", successStatus)) {
+			return "Gehaald";
+		} else if(StringUtils.equals("failed", successStatus)) {
+			return "Niet gehaald";
+		}
+		
 		return successStatus;
 	}
 

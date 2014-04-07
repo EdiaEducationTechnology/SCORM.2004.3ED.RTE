@@ -162,14 +162,12 @@ public class InteractionResultsPage extends BaseResultsPage {
 		IModel idHeader = new ResourceModel("column.header.id");
 		IModel descriptionHeader = new ResourceModel("column.header.description");
 		IModel completionStatusHeader = new ResourceModel("column.header.completion.status");
-		IModel successStatusHeader = new ResourceModel("column.header.success.status");
 		
 		List<IColumn> columns = new LinkedList<IColumn>();
 
 		columns.add(new PropertyColumn(idHeader, "id", "id"));
 		columns.add(new PropertyColumn(descriptionHeader, "description", "description"));
 		columns.add(new PropertyColumn(completionStatusHeader, "completionStatus", "completionStatus"));
-		columns.add(new PropertyColumn(successStatusHeader, "successStatus", "successStatus"));
 		
 		return columns;
 	}
