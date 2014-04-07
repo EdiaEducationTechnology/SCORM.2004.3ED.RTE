@@ -26,15 +26,21 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.wicket.Component;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.ResourceReference;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.sakaiproject.component.cover.ServerConfigurationService;
+import org.sakaiproject.scorm.model.api.Archive;
 import org.sakaiproject.scorm.model.api.ContentPackage;
 import org.sakaiproject.scorm.model.api.LearnerExperience;
 import org.sakaiproject.scorm.service.api.LearningManagementSystem;
@@ -45,10 +51,13 @@ import org.sakaiproject.scorm.ui.console.components.AccessStatusColumn;
 import org.sakaiproject.scorm.ui.console.components.AttemptNumberAction;
 import org.sakaiproject.scorm.ui.console.components.ContentPackageDetailPanel;
 import org.sakaiproject.scorm.ui.console.components.DecoratedDatePropertyColumn;
+import org.sakaiproject.scorm.ui.console.components.ResetAttemptAction;
 import org.sakaiproject.scorm.ui.console.pages.ConsoleBasePage;
+import org.sakaiproject.scorm.ui.validation.pages.ValidationPage.ValidateLinkColumn;
 import org.sakaiproject.wicket.markup.html.repeater.data.presenter.EnhancedDataPresenter;
 import org.sakaiproject.wicket.markup.html.repeater.data.table.Action;
 import org.sakaiproject.wicket.markup.html.repeater.data.table.ActionColumn;
+import org.sakaiproject.wicket.markup.html.repeater.data.table.AjaxImageLinkColumn;
 import org.sakaiproject.wicket.markup.html.repeater.util.EnhancedDataProvider;
 
 public class ResultsListPage extends ConsoleBasePage {
@@ -110,6 +119,7 @@ public class ResultsListPage extends ConsoleBasePage {
 		IModel attemptedHeader = new ResourceModel("column.header.attempted");
 		IModel statusHeader = new ResourceModel("column.header.status");
 		IModel numberOfAttemptsHeader = new ResourceModel("column.header.attempt.number");
+		IModel resetAttemptHeader = new ResourceModel("column.header.attempt.reset");
 		@SuppressWarnings("unused")
 		IModel scoreHeader = new ResourceModel("column.header.score");
 	
@@ -132,7 +142,8 @@ public class ResultsListPage extends ConsoleBasePage {
 		attemptNumberActionColumn.addAction(new AttemptNumberAction("numberOfAttempts", LearnerResultsPage.class, paramPropertyExpressions));
 		columns.add(attemptNumberActionColumn);
 		
-
+		columns.add(new ResetAttemptColumn(resetAttemptHeader));
+		
 		return columns;
 	}
 	
@@ -169,7 +180,33 @@ public class ResultsListPage extends ConsoleBasePage {
 		return PAGE_ICON;
 	}
 	
-	
+	public class ResetAttemptColumn extends AjaxImageLinkColumn {
+
+		private static final long serialVersionUID = 1L;
+
+		public ResetAttemptColumn(IModel<?> displayModel) {
+			super(displayModel);
+		}
+
+		@Override
+		public void onClick(Object bean, AjaxRequestTarget target) {
+			LearnerExperience learnerExperience = (LearnerExperience) bean;
+			
+			int numberOfAttempts = learnerExperience.getNumberOfAttempts();
+			if(numberOfAttempts > 0) {
+				learnerExperience.setNumberOfAttempts(numberOfAttempts++);
+				resultService.resetAttempt(learnerExperience);
+				log.info("Updated number of attempt for [" + learnerExperience + "]");
+				
+			}
+		}
+
+		@Override
+		public ResourceReference getIconReference(Object bean) {
+			return getPageIconReference();
+		}
+		
+	}
 	
 	
 }

@@ -47,6 +47,7 @@
 
 		<!-- Data Access Objects -->
 		<lookup-method name="attemptDao" bean="org.sakaiproject.scorm.dao.api.AttemptDao" />
+		<lookup-method name="contentPackageDao" bean="org.sakaiproject.scorm.dao.api.ContentPackageDao" />
 		<lookup-method name="dataManagerDao" bean="org.sakaiproject.scorm.dao.api.DataManagerDao" />
 		<lookup-method name="learnerDao" bean="org.sakaiproject.scorm.dao.LearnerDao" />
 

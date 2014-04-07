@@ -59,6 +59,8 @@ public interface ScormResultService {
 
 	public int getNumberOfAttempts(long contentPackageId, String learnerId);
 
+	public long resetAttempt(LearnerExperience learnerExperience);
+
 	public String[] getSiblingIds(long contentPackageId, String learnerId, long attemptNumber, String scoId, String interactionId);
 
 	public void saveAttempt(Attempt attempt);

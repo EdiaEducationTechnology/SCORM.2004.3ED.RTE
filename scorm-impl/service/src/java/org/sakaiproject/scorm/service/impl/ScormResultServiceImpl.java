@@ -20,6 +20,7 @@
  **********************************************************************************/
 package org.sakaiproject.scorm.service.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,19 +36,23 @@ import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.scorm.api.ScormConstants;
 import org.sakaiproject.scorm.dao.LearnerDao;
 import org.sakaiproject.scorm.dao.api.AttemptDao;
+import org.sakaiproject.scorm.dao.api.ContentPackageDao;
 import org.sakaiproject.scorm.dao.api.DataManagerDao;
+import org.sakaiproject.scorm.exceptions.LearnerNotDefinedException;
 import org.sakaiproject.scorm.model.api.ActivityReport;
 import org.sakaiproject.scorm.model.api.ActivitySummary;
 import org.sakaiproject.scorm.model.api.Attempt;
 import org.sakaiproject.scorm.model.api.CMIData;
 import org.sakaiproject.scorm.model.api.CMIField;
 import org.sakaiproject.scorm.model.api.CMIFieldGroup;
+import org.sakaiproject.scorm.model.api.ContentPackage;
 import org.sakaiproject.scorm.model.api.Interaction;
 import org.sakaiproject.scorm.model.api.Learner;
 import org.sakaiproject.scorm.model.api.LearnerExperience;
 import org.sakaiproject.scorm.model.api.Objective;
 import org.sakaiproject.scorm.model.api.Progress;
 import org.sakaiproject.scorm.model.api.Score;
+import org.sakaiproject.scorm.model.api.SessionBean;
 import org.sakaiproject.scorm.service.api.LearningManagementSystem;
 import org.sakaiproject.scorm.service.api.ScormResultService;
 
@@ -59,6 +64,8 @@ public abstract class ScormResultServiceImpl implements ScormResultService {
 
 	// Daos (also depedency injected)
 	protected abstract AttemptDao attemptDao();
+
+	protected abstract ContentPackageDao contentPackageDao();
 
 	protected abstract DataManagerDao dataManagerDao();
 
@@ -350,6 +357,45 @@ public abstract class ScormResultServiceImpl implements ScormResultService {
 
 	public int getNumberOfAttempts(long contentPackageId, String learnerId) {
 		return attemptDao().count(contentPackageId, learnerId);
+	}
+	
+	public long resetAttempt(LearnerExperience learnerExperience) {
+		if (learnerExperience != null) {
+			int numberOfAttempts = learnerExperience.getNumberOfAttempts();
+			
+			if (numberOfAttempts > 0) {
+				Attempt resetAttemptInternal = resetAttemptInternal(learnerExperience);
+				return resetAttemptInternal.getAttemptNumber();
+			}
+		}
+		
+		return -1;
+	}
+	
+	private Attempt resetAttemptInternal(LearnerExperience learnerExperience) {
+		Attempt attempt  = new Attempt();
+		String learnerId = learnerExperience.getLearnerId();
+		long contentPackageId = learnerExperience.getContentPackageId();
+		ContentPackage contentPackage = contentPackageDao().load(contentPackageId);
+
+		attempt.setContentPackageId(contentPackageId);
+		attempt.setCourseId(contentPackage.getResourceId());
+		attempt.setLearnerId(learnerId);
+		attempt.setAttemptNumber(learnerExperience.getNumberOfAttempts()+1);
+		attempt.setLearnerName("Unavailable");
+		attempt.setBeginDate(new Date());
+		try {
+			Learner learner = learnerDao().load(learnerId);
+
+			if (learner != null) {
+				attempt.setLearnerName(learner.getDisplayName());
+			}
+		} catch (LearnerNotDefinedException e) {
+			log.error("Could not find learner " + learnerId, e);
+		}
+		saveAttempt(attempt);
+		
+		return attempt;
 	}
 
 	private double getRealValue(String element, IDataManager dataManager) {

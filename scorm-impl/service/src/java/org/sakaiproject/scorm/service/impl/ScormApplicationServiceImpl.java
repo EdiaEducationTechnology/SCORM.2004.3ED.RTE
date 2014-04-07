@@ -230,28 +230,33 @@ public abstract class ScormApplicationServiceImpl implements ScormApplicationSer
 			attempt = attemptDao().find(courseId, learnerId, attemptNumber);
 
 			if (attempt == null) {
-				attempt = new Attempt();
-
-				attempt.setContentPackageId(sessionBean.getContentPackage().getContentPackageId());
-				attempt.setCourseId(courseId);
-				attempt.setLearnerId(learnerId);
-				attempt.setAttemptNumber(attemptNumber);
-				attempt.setLearnerName("Unavailable");
-				attempt.setBeginDate(new Date());
-				try {
-					Learner learner = learnerDao().load(learnerId);
-
-					if (learner != null) {
-						attempt.setLearnerName(learner.getDisplayName());
-					}
-				} catch (LearnerNotDefinedException e) {
-					log.error("Could not find learner " + learnerId, e);
-				}
+				attempt = createNewAttemptInternal(sessionBean, courseId, learnerId, attemptNumber);
 
 			}
 			sessionBean.setAttempt(attempt);
 		}
 
+		return attempt;
+	}
+
+	private Attempt createNewAttemptInternal(SessionBean sessionBean, String courseId, String learnerId, long attemptNumber) {
+		Attempt attempt  = new Attempt();
+
+		attempt.setContentPackageId(sessionBean.getContentPackage().getContentPackageId());
+		attempt.setCourseId(courseId);
+		attempt.setLearnerId(learnerId);
+		attempt.setAttemptNumber(attemptNumber);
+		attempt.setLearnerName("Unavailable");
+		attempt.setBeginDate(new Date());
+		try {
+			Learner learner = learnerDao().load(learnerId);
+
+			if (learner != null) {
+				attempt.setLearnerName(learner.getDisplayName());
+			}
+		} catch (LearnerNotDefinedException e) {
+			log.error("Could not find learner " + learnerId, e);
+		}
 		return attempt;
 	}
 
