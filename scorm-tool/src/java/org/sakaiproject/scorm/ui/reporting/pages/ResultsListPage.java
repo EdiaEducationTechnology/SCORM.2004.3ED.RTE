@@ -58,6 +58,9 @@ public class ResultsListPage extends ConsoleBasePage {
 	private static final long serialVersionUID = 1L;
 
 	private static ResourceReference PAGE_ICON = new ResourceReference(LearnerResultsPage.class, "res/report.png");
+	private static ResourceReference RESET_ATTEMPT_ICON = new ResourceReference(LearnerResultsPage.class, "res/script_go.png");
+	
+	private PageParameters pageParameters;
 	
 	@SuppressWarnings("unused")
 	private static Log log = LogFactory.getLog(ResultsListPage.class);
@@ -71,6 +74,7 @@ public class ResultsListPage extends ConsoleBasePage {
 	
 	public ResultsListPage(PageParameters pageParams) {
 		super(pageParams);
+		this.pageParameters = pageParams;
 		
 		final long contentPackageId = pageParams.getLong("contentPackageId");
 		
@@ -190,13 +194,13 @@ public class ResultsListPage extends ConsoleBasePage {
 				learnerExperience.setNumberOfAttempts(numberOfAttempts++);
 				resultService.resetAttempt(learnerExperience);
 				log.info("Updated number of attempt for [" + learnerExperience + "]");
-				
+				setResponsePage(ResultsListPage.class, pageParameters);
 			}
 		}
 
 		@Override
 		public ResourceReference getIconReference(Object bean) {
-			return getPageIconReference();
+			return RESET_ATTEMPT_ICON;
 		}
 		
 	}
