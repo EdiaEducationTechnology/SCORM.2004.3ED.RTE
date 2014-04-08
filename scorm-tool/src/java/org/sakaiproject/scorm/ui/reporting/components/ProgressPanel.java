@@ -20,10 +20,12 @@
  **********************************************************************************/
 package org.sakaiproject.scorm.ui.reporting.components;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.StringResourceModel;
 import org.sakaiproject.scorm.model.api.Progress;
 
 public class ProgressPanel extends Panel {
@@ -43,7 +45,12 @@ public class ProgressPanel extends Panel {
 		
 		add(percentCompleteLabel);
 		
-		Label successLabel = new Label("successStatus");
+		Label successLabel;
+		if(StringUtils.isNotEmpty(progress.getSuccessStatus())) {
+			successLabel = new Label("successStatus", new StringResourceModel("success.status.label." + progress.getSuccessStatus(), new Model<Progress>(progress)));
+		} else {
+			successLabel = new Label("successStatus");
+		}
 		Label completionLabel = new Label("completionStatus");
 		
 		successLabel.setVisible(progress.getSuccessStatus() != null && progress.getSuccessStatus().trim().length() != 0);

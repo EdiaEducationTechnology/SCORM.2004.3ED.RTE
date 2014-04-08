@@ -138,7 +138,7 @@ public class ScoResultsPage extends BaseResultsPage {
 			}
 			
 			InteractionProvider dataProvider = new InteractionProvider(interactions);
-			dataProvider.setTableTitle("Interactions");
+			dataProvider.setTableTitle("Klik op de opdracht om het goede antwoord te zien");
 			EnhancedDataPresenter presenter = new EnhancedDataPresenter("interactionPresenter", getColumns(), dataProvider);
 			add(presenter);
 			
@@ -205,7 +205,6 @@ public class ScoResultsPage extends BaseResultsPage {
 	
 	private List<IColumn> getColumns() {
 		IModel idHeader = new ResourceModel("column.header.id");
-		IModel descriptionHeader = new ResourceModel("column.header.description");
 		IModel typeHeader = new ResourceModel("column.header.type");
 		IModel resultHeader = new ResourceModel("column.header.result");
 		
@@ -216,27 +215,8 @@ public class ScoResultsPage extends BaseResultsPage {
 		ActionColumn actionColumn = new ActionColumn(idHeader, "interactionId", "interactionId");
 		actionColumn.addAction(new Action("interactionId", InteractionResultsPage.class, paramPropertyExpressions));
 		columns.add(actionColumn);
-		columns.add(new PropertyColumn(descriptionHeader, "description", "description"));
 		columns.add(new TypePropertyColumn(typeHeader, "type", "type"));
 		columns.add(new IconPropertyColumn(resultHeader, InteractionResultsPage.class, paramPropertyExpressions, "result"));
-		
-		/*ResourceReference resultIconReference = BLANK_ICON;
-		String result = interaction.getResult();
-		if (result != null) {
-			if (result.equalsIgnoreCase("correct"))
-				resultIconReference = CORRECT_ICON;
-			else if (result.equalsIgnoreCase("incorrect"))
-				resultIconReference = INCORRECT_ICON;
-			else if (result.equalsIgnoreCase("neutral")) {
-				resultIconReference = NEUTRAL_ICON;
-				isNeutral = true;
-			} else if (result.equalsIgnoreCase("unanticipated"))
-				resultIconReference = UNANTICIPATED_ICON;
-			else
-				showIcon = false;
-		} else
-			showIcon = false;
-		*/
 		
 		return columns;
 	}
