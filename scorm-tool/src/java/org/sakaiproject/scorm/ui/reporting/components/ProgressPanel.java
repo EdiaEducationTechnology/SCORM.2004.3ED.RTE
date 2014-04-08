@@ -46,12 +46,19 @@ public class ProgressPanel extends Panel {
 		add(percentCompleteLabel);
 		
 		Label successLabel;
+		Label completionLabel;
+		
 		if(StringUtils.isNotEmpty(progress.getSuccessStatus())) {
 			successLabel = new Label("successStatus", new StringResourceModel("success.status.label." + progress.getSuccessStatus(), new Model<Progress>(progress)));
 		} else {
 			successLabel = new Label("successStatus");
 		}
-		Label completionLabel = new Label("completionStatus");
+		
+		if(StringUtils.isNotEmpty(progress.getCompletionStatus())) {
+			completionLabel = new Label("successStatus", new StringResourceModel("success.status.label." + progress.getCompletionStatus(), new Model<Progress>(progress)));
+		} else {
+			completionLabel = new Label("completionStatus");
+		}
 		
 		successLabel.setVisible(progress.getSuccessStatus() != null && progress.getSuccessStatus().trim().length() != 0);
 		completionLabel.setVisible(progress.getCompletionStatus() != null && progress.getCompletionStatus().trim().length() != 0);
