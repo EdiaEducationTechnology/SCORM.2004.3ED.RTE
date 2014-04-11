@@ -36,6 +36,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.sakaiproject.authz.cover.SecurityService;
 import org.sakaiproject.scorm.model.api.ContentPackage;
 import org.sakaiproject.scorm.model.api.LearnerExperience;
 import org.sakaiproject.scorm.service.api.LearningManagementSystem;
@@ -47,6 +48,8 @@ import org.sakaiproject.scorm.ui.console.components.AttemptNumberAction;
 import org.sakaiproject.scorm.ui.console.components.ContentPackageDetailPanel;
 import org.sakaiproject.scorm.ui.console.components.DecoratedDatePropertyColumn;
 import org.sakaiproject.scorm.ui.console.pages.ConsoleBasePage;
+import org.sakaiproject.site.api.SiteService;
+import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.wicket.markup.html.repeater.data.presenter.EnhancedDataPresenter;
 import org.sakaiproject.wicket.markup.html.repeater.data.table.Action;
 import org.sakaiproject.wicket.markup.html.repeater.data.table.ActionColumn;
@@ -116,7 +119,9 @@ public class ResultsListPage extends ConsoleBasePage {
 		IModel attemptedHeader = new ResourceModel("column.header.attempted");
 		IModel statusHeader = new ResourceModel("column.header.status");
 		IModel numberOfAttemptsHeader = new ResourceModel("column.header.attempt.number");
-		IModel resetAttemptHeader = new ResourceModel("column.header.attempt.reset");
+		String currentSiteId = ToolManager.getCurrentPlacement().getContext();
+		boolean allowUpdateSite = org.sakaiproject.site.cover.SiteService.allowUpdateSite(currentSiteId);
+		IModel resetAttemptHeader = allowUpdateSite ? new ResourceModel("column.header.attempt.reset") : null;
 		@SuppressWarnings("unused")
 		IModel scoreHeader = new ResourceModel("column.header.score");
 	
@@ -139,8 +144,9 @@ public class ResultsListPage extends ConsoleBasePage {
 		attemptNumberActionColumn.addAction(new AttemptNumberAction("numberOfAttempts", LearnerResultsPage.class, paramPropertyExpressions));
 		columns.add(attemptNumberActionColumn);
 		
-		columns.add(new ResetAttemptColumn(resetAttemptHeader));
-		
+		if (resetAttemptHeader != null) {
+			columns.add(new ResetAttemptColumn(resetAttemptHeader));
+		}
 		return columns;
 	}
 	
