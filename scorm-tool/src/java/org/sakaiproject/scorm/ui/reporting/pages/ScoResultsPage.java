@@ -138,7 +138,7 @@ public class ScoResultsPage extends BaseResultsPage {
 			}
 			
 			InteractionProvider dataProvider = new InteractionProvider(interactions);
-			dataProvider.setTableTitle("Klik op de opdracht om het goede antwoord te zien");
+			dataProvider.setTableTitle("Klik op de opdracht om het goede antwoord te zien.");
 			EnhancedDataPresenter presenter = new EnhancedDataPresenter("interactionPresenter", getColumns(), dataProvider);
 			add(presenter);
 			
