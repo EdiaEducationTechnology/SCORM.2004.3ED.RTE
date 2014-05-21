@@ -50,11 +50,6 @@
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
     </dependency>
-    <dependency>
-    	<groupId>nl.edia</groupId>
-    	<artifactId>edia-sakai-utils</artifactId>
-    	<version>1.4.1</version>
-    </dependency>
   </dependencies>
   <build>
     <resources>

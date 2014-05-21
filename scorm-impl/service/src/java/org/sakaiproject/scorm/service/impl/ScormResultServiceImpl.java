@@ -26,8 +26,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import nl.edia.sakai.tool.util.SakaiUtils;
-
 import org.adl.api.ecmascript.APIErrorCodes;
 import org.adl.datamodels.DMInterface;
 import org.adl.datamodels.DMProcessingInfo;
@@ -61,6 +59,7 @@ import org.sakaiproject.scorm.service.api.LearningManagementSystem;
 import org.sakaiproject.scorm.service.api.ScormResultService;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.cover.SiteService;
+import org.sakaiproject.tool.cover.ToolManager;
 
 public abstract class ScormResultServiceImpl implements ScormResultService {
 
@@ -329,7 +328,7 @@ public abstract class ScormResultServiceImpl implements ScormResultService {
 
 	public List<LearnerExperience> getLearnerExperiences(long contentPackageId) {
 		List<LearnerExperience> experiences = new LinkedList<LearnerExperience>();
-		String currentSiteId = SakaiUtils.getCurrentSiteId();
+		String currentSiteId = ToolManager.getCurrentPlacement().getContext();
 		Site currentSite = null;
 		try {
 			currentSite = SiteService.getSite(currentSiteId);
