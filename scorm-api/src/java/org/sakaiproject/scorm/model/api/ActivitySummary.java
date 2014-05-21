@@ -102,7 +102,7 @@ public class ActivitySummary implements Serializable {
 	}
 
 	public String getSuccessStatus() {
-        //TODO BOOMSAK-410: Ugly, requires fix! Committed due to time limit 
+        //TODO BOOMSAK-410: Ugly, requires fix! Committed due to time limit
         if(StringUtils.equals("passed", successStatus)) {
             return "Gehaald";
         } else if(StringUtils.equals("failed", successStatus)) {

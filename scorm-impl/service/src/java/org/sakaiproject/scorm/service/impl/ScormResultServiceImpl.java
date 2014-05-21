@@ -26,6 +26,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import nl.edia.sakai.tool.util.SakaiUtils;
+
 import org.adl.api.ecmascript.APIErrorCodes;
 import org.adl.datamodels.DMInterface;
 import org.adl.datamodels.DMProcessingInfo;
@@ -33,6 +35,8 @@ import org.adl.datamodels.IDataManager;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.sakaiproject.authz.cover.SecurityService;
+import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.scorm.api.ScormConstants;
 import org.sakaiproject.scorm.dao.LearnerDao;
 import org.sakaiproject.scorm.dao.api.AttemptDao;
@@ -55,6 +59,8 @@ import org.sakaiproject.scorm.model.api.Score;
 import org.sakaiproject.scorm.model.api.SessionBean;
 import org.sakaiproject.scorm.service.api.LearningManagementSystem;
 import org.sakaiproject.scorm.service.api.ScormResultService;
+import org.sakaiproject.site.api.Site;
+import org.sakaiproject.site.cover.SiteService;
 
 public abstract class ScormResultServiceImpl implements ScormResultService {
 
@@ -323,36 +329,55 @@ public abstract class ScormResultServiceImpl implements ScormResultService {
 
 	public List<LearnerExperience> getLearnerExperiences(long contentPackageId) {
 		List<LearnerExperience> experiences = new LinkedList<LearnerExperience>();
+		String currentSiteId = SakaiUtils.getCurrentSiteId();
+		Site currentSite = null;
+		try {
+			currentSite = SiteService.getSite(currentSiteId);
+		} catch (IdUnusedException e) {
+		}
 
 		String context = lms().currentContext();
 		List<Learner> learners = learnerDao().find(context);
-
+		
 		for (int i = 0; i < learners.size(); i++) {
 			Learner learner = learners.get(i);
-			LearnerExperience experience = new LearnerExperience(learner, contentPackageId);
-			List<Attempt> attempts = getAttempts(contentPackageId, learner.getId());
+			
+			boolean isAdminOrSiteAdmin = getLearnerIsAdminOrSiteAdmin(currentSite, learner);
+			
+			if (learner != null && !isAdminOrSiteAdmin) {
+				LearnerExperience experience = new LearnerExperience(learner, contentPackageId);
+				List<Attempt> attempts = getAttempts(contentPackageId, learner.getId());
+				int status = ScormConstants.NOT_ACCESSED;
+				if (attempts != null) {
+					if (attempts.size() > 0) {
+						// Grab the latest attempt
+						Attempt latestAttempt = attempts.get(0);
 
-			int status = ScormConstants.NOT_ACCESSED;
-			if (attempts != null) {
-				if (attempts.size() > 0) {
-					// Grab the latest attempt
-					Attempt latestAttempt = attempts.get(0);
+						//List<CMIData> data = getSummaryCMIData(latestAttempt);
+						experience.setLastAttemptDate(latestAttempt.getBeginDate());
 
-					//List<CMIData> data = getSummaryCMIData(latestAttempt);
-					experience.setLastAttemptDate(latestAttempt.getBeginDate());
+						status = ScormConstants.COMPLETED;
+					}
 
-					status = ScormConstants.COMPLETED;
+					experience.setNumberOfAttempts(attempts.size());
+
 				}
-
-				experience.setNumberOfAttempts(attempts.size());
-
+				experience.setStatus(status);
+				experiences.add(experience);
 			}
-
-			experience.setStatus(status);
-			experiences.add(experience);
 		}
 
 		return experiences;
+	}
+
+	private boolean getLearnerIsAdminOrSiteAdmin(Site currentSite, Learner learner) {
+		boolean isAdminOrSiteAdmin = SecurityService.isSuperUser(learner.getDisplayId());
+		
+		if(!isAdminOrSiteAdmin) {
+			isAdminOrSiteAdmin = currentSite != null ? currentSite.isAllowed(learner.getDisplayId(), SiteService.SECURE_UPDATE_SITE) : false;
+		}
+		
+		return isAdminOrSiteAdmin;
 	}
 
 	public int getNumberOfAttempts(long contentPackageId, String learnerId) {
