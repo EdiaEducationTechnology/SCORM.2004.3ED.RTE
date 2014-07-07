@@ -370,10 +370,10 @@ public abstract class ScormResultServiceImpl implements ScormResultService {
 	}
 
 	private boolean getLearnerIsAdminOrSiteAdmin(Site currentSite, Learner learner) {
-		boolean isAdminOrSiteAdmin = SecurityService.isSuperUser(learner.getDisplayId());
+		boolean isAdminOrSiteAdmin = SecurityService.isSuperUser(learner.getId());
 		
 		if(!isAdminOrSiteAdmin) {
-			isAdminOrSiteAdmin = currentSite != null ? currentSite.isAllowed(learner.getDisplayId(), SiteService.SECURE_UPDATE_SITE) : false;
+			isAdminOrSiteAdmin = currentSite != null ? currentSite.isAllowed(learner.getId(), SiteService.SECURE_UPDATE_SITE) : false;
 		}
 		
 		return isAdminOrSiteAdmin;
