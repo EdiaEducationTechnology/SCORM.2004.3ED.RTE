@@ -353,7 +353,7 @@ public abstract class ScormResultServiceImpl implements ScormResultService {
 						Attempt latestAttempt = attempts.get(0);
 
 						//List<CMIData> data = getSummaryCMIData(latestAttempt);
-						experience.setLastAttemptDate(latestAttempt.getBeginDate());
+						experience.setLastAttemptDate(latestAttempt.getLastModifiedDate());
 
 						status = ScormConstants.COMPLETED;
 					}
