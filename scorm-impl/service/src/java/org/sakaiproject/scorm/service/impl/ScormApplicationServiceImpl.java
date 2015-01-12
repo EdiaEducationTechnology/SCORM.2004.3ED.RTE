@@ -683,6 +683,37 @@ public abstract class ScormApplicationServiceImpl implements ScormApplicationSer
 			// Initialize the mode
 			element = "cmi.mode";
 			DMInterface.processSetValue(element, "normal", true, ioSCOData, validatorFactory);
+			
+			/* 1) If a cmi.scaled_passing_score is not defined, the determination of cmi.success_status 
+			 * is controlled and managed by the SCO, the LMS cannot imply any value for the cmi.success_status 
+			 * in any way. There is no requirement in SCORM that mandates a SCO to set cmi.success_status. 
+			 * If the SCO does not set the cmi.success_status, the LMS shall use the default value of “unknown” 
+			 * as the value for cmi.success_status.
+			 * 
+			 * 2) If a cmi.scaled_passing_score is defined, it is the responsibility of the LMS to maintain 
+			 * congruence between the cmi.scaled_passing_score, cmi.score.scaled, and the value used by the 
+			 * LMS for cmi.success_status. The LMS must report (when requested via a GetValue() call) 
+			 * cmi.success_status by adhering to the requirements defined in section 4.2.22.1: 
+			 * Success Status Evaluation.
+			 * 
+			 * */
+			element = "cmi.success_status";
+			DMInterface.processSetValue(element, "unknown", true, ioSCOData, validatorFactory);	
+			
+			/*
+			 * If a cmi.completion_threshold is not defined, the determination of cmi.completion_status is 
+			 * controlled and managed by the SCO, the LMS cannot imply any value for the cmi.completion_status in 
+			 * any way. There is no requirement in SCORM that mandates a SCO to set cmi.completion_status.
+			 * If the SCO does not set the cmi.completion_status, the LMS shall use the default value of “unknown” 
+			 * as the value for cmi.completion_status.
+			 * If a cmi.completion_threshold is defined, it is the responsibility of the LMS to maintain 
+			 * congruence between the cmi.completion_threshold, cmi.progress_measure, and the value used by the 
+			 * LMS for cmi.completion_status. The LMS must report (when requested via a GetValue() call) 
+			 * cmi.completion_status by adhering to the requirements defined in section 4.2.4.1: 
+			 * Completion Status Evaluation. 
+			 */
+			element = "cmi.completion_status";
+			DMInterface.processSetValue(element, "unknown", true, ioSCOData, validatorFactory);	
 
 			// Initialize any launch data
 			if (dataFromLMS != null && !dataFromLMS.equals("")) {
