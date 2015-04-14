@@ -4,7 +4,7 @@
   <parent>
     <artifactId>sakai-scorm-base</artifactId>
     <groupId>org.sakaiproject</groupId>
-    <version>3.1.6-SNAPSHOT</version>
+    <version>3.1.9-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <name>sakai-scorm-content-impl</name>
@@ -120,6 +120,9 @@
           <scope>provided</scope>
         </dependency>
       </dependencies>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
     </profile>
     <profile>
       <id>sakai2.9</id>
@@ -144,32 +147,5 @@
         </dependency>
       </dependencies>
     </profile>
-    <profile>
-      <id>sakai10</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>org.sakaiproject.kernel</groupId>
-          <artifactId>sakai-kernel-api</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>org.sakaiproject.kernel</groupId>
-          <artifactId>sakai-kernel-util</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>org.sakaiproject.kernel</groupId>
-          <artifactId>sakai-kernel-storage-util</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>net.sf.ehcache</groupId>
-          <artifactId>ehcache-core</artifactId>
-          <type>jar</type>
-          <scope>provided</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-
   </profiles>
 </project>
