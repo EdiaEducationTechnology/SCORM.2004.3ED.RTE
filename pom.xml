@@ -16,13 +16,17 @@
         -Psakai2.7 : all Sakai 2.7 versions 
         -Psakai2.8 : all Sakai 2.8 versions 
         -Psakai2.9 : all Sakai 2.9 versions 
+        -Psakai10 : all Sakai 10 versions
+        -Psakai11 : all Sakai 11 versions
         
        This project is known to work with the following Sakai versions: 
         2.7.1 
         2.8.0 
         2.9.0 
+        10.3
+        11-SNAPSHOT
      -->
-    <version>2.8.0</version>
+    <version>11-SNAPSHOT</version>
   </parent>
   <artifactId>sakai-scorm-base</artifactId>
   <name>Sakai Scorm Project</name>
@@ -69,7 +73,7 @@
           <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>${sakai.spring.test.version}</version>
+            <version>2.5.6.SEC03</version>
             <scope>test</scope>
           </dependency>
         </dependencies>
@@ -77,9 +81,6 @@
     </profile>
     <profile>
       <id>sakai2.8</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
       <modules>
         <module>scorm-api</module>
         <module>scorm-impl/adl</module>
@@ -104,48 +105,77 @@
         <module>scorm-tool</module>
       </modules>
     </profile>
+    <profile>
+      <id>sakai10</id>
+      <modules>
+        <module>scorm-api</module>
+        <module>scorm-impl/adl</module>
+        <module>scorm-impl/client</module>
+        <module>scorm-impl/content</module>
+        <module>scorm-impl/model</module>
+        <module>scorm-impl/service</module>
+        <module>scorm-impl/pack</module>
+        <module>scorm-tool</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>sakai11</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>scorm-api</module>
+        <module>scorm-impl/adl</module>
+        <module>scorm-impl/client</module>
+        <module>scorm-impl/content</module>
+        <module>scorm-impl/model</module>
+        <module>scorm-impl/service</module>
+        <module>scorm-impl/pack</module>
+        <module>scorm-tool</module>
+      </modules>
+    </profile>
   </profiles>
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>org.sakaiproject.scorm</groupId>
         <artifactId>sakai-scorm-adl-impl</artifactId>
-        <version>3.1.9-SNAPSHOT</version>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.sakaiproject.scorm</groupId>
         <artifactId>sakai-scorm-content-impl</artifactId>
-        <version>3.1.9-SNAPSHOT</version>
+        <version>${project.version}</version>
         <type>jar</type>
       </dependency>
       <dependency>
         <groupId>org.sakaiproject.scorm</groupId>
         <artifactId>sakai-scorm-client-impl</artifactId>
-        <version>3.1.9-SNAPSHOT</version>
+        <version>${project.version}</version>
         <type>jar</type>
       </dependency>
       <dependency>
         <groupId>org.sakaiproject.scorm</groupId>
         <artifactId>sakai-scorm-model-impl</artifactId>
-        <version>3.1.9-SNAPSHOT</version>
+        <version>${project.version}</version>
         <type>jar</type>
       </dependency>
       <dependency>
         <groupId>org.sakaiproject.scorm</groupId>
         <artifactId>sakai-scorm-service-impl</artifactId>
-        <version>3.1.9-SNAPSHOT</version>
+        <version>${project.version}</version>
         <type>jar</type>
       </dependency>
       <dependency>
         <groupId>org.sakaiproject.scorm</groupId>
         <artifactId>sakai-scorm-api</artifactId>
-        <version>3.1.9-SNAPSHOT</version>
+        <version>${project.version}</version>
         <type>jar</type>
       </dependency>
       <dependency>
         <groupId>org.sakaiproject</groupId>
         <artifactId>sakai-wicket-for-scorm-tool</artifactId>
-        <version>3.0.1</version>
+        <version>3.0.3-SNAPSHOT</version>
         <type>jar</type>
         <scope>compile</scope>
       </dependency>

@@ -71,9 +71,6 @@
           <artifactId>sakai-kernel-api</artifactId>
         </dependency>
       </dependencies>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
     </profile>
     <profile>
       <id>sakai2.9</id>
@@ -83,6 +80,27 @@
           <artifactId>sakai-kernel-api</artifactId>
         </dependency>
       </dependencies>
+    </profile>
+    <profile>
+      <id>sakai10</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.sakaiproject.kernel</groupId>
+          <artifactId>sakai-kernel-api</artifactId>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>sakai11</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.sakaiproject.kernel</groupId>
+          <artifactId>sakai-kernel-api</artifactId>
+        </dependency>
+      </dependencies>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
     </profile>
   </profiles>
 </project>
