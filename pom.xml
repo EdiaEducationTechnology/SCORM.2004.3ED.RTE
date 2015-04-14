@@ -16,14 +16,15 @@
         -Psakai2.7 : all Sakai 2.7 versions 
         -Psakai2.8 : all Sakai 2.8 versions 
         -Psakai2.9 : all Sakai 2.9 versions 
+        -Psakai10 : all Sakai 10 versions
         
        This project is known to work with the following Sakai versions: 
         2.7.1 
         2.8.0 
         2.9.0 
-        10.0
+        10.3
      -->
-    <version>10</version>
+    <version>10.3</version>
   </parent>
   <artifactId>sakai-scorm-base</artifactId>
   <name>Sakai Scorm Project</name>
