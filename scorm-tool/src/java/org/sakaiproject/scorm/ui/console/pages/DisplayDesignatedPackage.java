@@ -135,7 +135,7 @@ public class DisplayDesignatedPackage extends SakaiPortletWebPage implements IHe
 			PopupSettings popupSettings = new PopupSettings(PageMap.forName(title), PopupSettings.RESIZABLE){
 				@Override
 				public String getPopupJavaScript() {
-					return "setTimeout($('.portletTitle .title a')[0].click,50); " + super.getPopupJavaScript();
+					return "setTimeout(window.parent.$('.portletTitle .title a')[0].click(),50); " + super.getPopupJavaScript();
 				}
 			};
 			popupSettings.setWidth(1020);
