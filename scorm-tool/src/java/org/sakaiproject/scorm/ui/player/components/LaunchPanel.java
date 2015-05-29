@@ -17,6 +17,7 @@ public class LaunchPanel extends UISynchronizerPanel implements IHeaderContribut
 	private static final long serialVersionUID = 1L;
 	
 	protected static final String HEADSCRIPTS = "/library/js/headscripts.js";
+	protected static final String JQUERY = "/library/js/jquery/1.11.1/jquery-1.11.1.min.js";
 	protected static final String RESIZESCRIPT = "scripts/resize.js";
 	
 	private PlayerPage view;
@@ -62,6 +63,7 @@ public class LaunchPanel extends UISynchronizerPanel implements IHeaderContribut
 	
 	public void renderHead(IHeaderResponse response) {
 		response.renderJavascriptReference(HEADSCRIPTS);
+		response.renderJavascriptReference(JQUERY);
 		response.renderJavascriptReference(RESIZESCRIPT);
 		response.renderOnLoadJavascript("initResizing()");
 		response.renderOnEventJavascript("window", "resize", "onResize()");
