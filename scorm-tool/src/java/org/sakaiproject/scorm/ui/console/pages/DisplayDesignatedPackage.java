@@ -115,7 +115,6 @@ public class DisplayDesignatedPackage extends SakaiPortletWebPage implements IHe
 
 		return params;
 	}
-	
 
 	/**
 	 * @param pkg
@@ -130,16 +129,11 @@ public class DisplayDesignatedPackage extends SakaiPortletWebPage implements IHe
 		if (StringUtils.isNotBlank(pkg.getTitle())) {
 
 			String title = pkg.getTitle();
-			
-			// modify popupJavaScript
-			PopupSettings popupSettings = new PopupSettings(PageMap.forName(title), PopupSettings.RESIZABLE){
-				@Override
-				public String getPopupJavaScript() {
-					return "setTimeout(window.parent.$('.portletTitle .title a')[0].click(),50); " + super.getPopupJavaScript();
-				}
-			};
+
+			PopupSettings popupSettings = new PopupSettings(PageMap.forName(title), PopupSettings.RESIZABLE);
 			popupSettings.setWidth(1020);
 			popupSettings.setHeight(740);
+
 			popupSettings.setWindowName(title);
 
 			lnkGo.setPopupSettings(popupSettings);
@@ -185,4 +179,5 @@ public class DisplayDesignatedPackage extends SakaiPortletWebPage implements IHe
 		add(lnkConfigure);
 		add(lnkResults);
 	}
+
 } // class
