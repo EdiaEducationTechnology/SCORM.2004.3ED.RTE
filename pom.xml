@@ -118,7 +118,7 @@
       <dependency>
         <groupId>org.sakaiproject</groupId>
         <artifactId>sakai-wicket-for-scorm-tool</artifactId>
-        <version>3.0.2</version>
+        <version>3.1.2</version>
         <type>jar</type>
         <scope>compile</scope>
       </dependency>
