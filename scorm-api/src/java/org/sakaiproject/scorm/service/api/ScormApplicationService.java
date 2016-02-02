@@ -49,4 +49,6 @@ public interface ScormApplicationService {
 
 	public boolean terminate(String iParam, INavigationEvent navigationEvent, SessionBean sessionBean, ScoBean scoBean);
 
+	void addListener(ScormLearningEventListener listener);
+
 }

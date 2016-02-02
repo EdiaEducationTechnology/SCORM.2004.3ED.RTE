@@ -29,6 +29,15 @@
 		<lookup-method name="learnerDao" bean="org.sakaiproject.scorm.dao.LearnerDao" />
 		<lookup-method name="lms" bean="org.sakaiproject.scorm.service.api.LearningManagementSystem" />
 	</bean>
+  
+    <bean id="org.sakaiproject.scorm.service.api.ScormLearningEventListener" class="org.sakaiproject.scorm.service.impl.LrsScormLearningEventListener" init-method="init">
+      <property name="scormResultService" ref="org.sakaiproject.scorm.service.api.ScormResultService"/>
+      <property name="scormApplicationService" ref="org.sakaiproject.scorm.service.api.ScormApplicationService"/>
+      <property name="learningResourceStoreService" ref="org.sakaiproject.event.api.LearningResourceStoreService"/>
+      <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+      <property name="toolManager" ref="org.sakaiproject.tool.api.ToolManager" />
+      <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService" />
+    </bean>
 
 	<bean id="org.sakaiproject.scorm.service.api.ScormResultService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="transactionManager" ref="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager" />

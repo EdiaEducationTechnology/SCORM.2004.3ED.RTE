@@ -126,6 +126,15 @@ public interface ISeqActivityTree {
 	 *                 objectives are global to the system.
 	 */
 	public void setScopeID(String iScopeID);
+	
+	/**
+	 * Retrieves the activity (<code>SeqActivity</code>) associated with the root
+	 * of this activity tree.
+	 * 
+	 * @return The activity (<code>SeqActivity</code>)  associated with the root
+	 *         or <code>null</code> if none has been assigned.
+	 */
+	public SeqActivity getRoot();
 
 	/**
 	 * Set the count of all activities in the activity tree.

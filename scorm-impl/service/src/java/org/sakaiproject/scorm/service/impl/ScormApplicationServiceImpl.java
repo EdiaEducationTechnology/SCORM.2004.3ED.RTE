@@ -1,5 +1,6 @@
 package org.sakaiproject.scorm.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,7 @@ import org.sakaiproject.scorm.navigation.INavigationEvent;
 import org.sakaiproject.scorm.navigation.impl.NavigationEvent;
 import org.sakaiproject.scorm.service.api.LearningManagementSystem;
 import org.sakaiproject.scorm.service.api.ScormApplicationService;
+import org.sakaiproject.scorm.service.api.ScormLearningEventListener;
 import org.sakaiproject.scorm.service.api.ScormSequencingService;
 import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 
@@ -86,6 +88,8 @@ public abstract class ScormApplicationServiceImpl implements ScormApplicationSer
 	protected abstract AttemptDao attemptDao();
 
 	IValidatorFactory validatorFactory = new ValidatorFactory();
+	
+	List<ScormLearningEventListener> listeners = new ArrayList<ScormLearningEventListener>();
 
 	private IValidRequests commit(SessionBean sessionBean, IDataManager dm, ISequencer sequencer) {
 		log.debug("Service - Commit");
@@ -192,6 +196,11 @@ public abstract class ScormApplicationServiceImpl implements ScormApplicationSer
 			log.debug("API Commit (result): " + isSuccessful);
 		}
 
+		if (isSuccessful) {
+			for (ScormLearningEventListener listener : listeners) {
+				listener.onCommit(sessionBean, scoBean);
+			}
+		}
 		return isSuccessful;
 	}
 
@@ -617,6 +626,11 @@ public abstract class ScormApplicationServiceImpl implements ScormApplicationSer
 			log.debug("API Initialize (result): " + isSuccessful);
 		}
 
+		if (isSuccessful) {
+			for (ScormLearningEventListener listener : listeners) {
+				listener.onInitialize(sessionBean, scoBean);
+			}
+		}
 		return isSuccessful;
 	}
 
@@ -1297,6 +1311,11 @@ public abstract class ScormApplicationServiceImpl implements ScormApplicationSer
 			log.debug("API SetValue (result): " + isSuccessful);
 		}
 
+		if (isSuccessful) {
+			for (ScormLearningEventListener listener : listeners) {
+				listener.onSetValue(dataModelElement, value, sessionBean, scoBean);
+			}
+		}
 		return isSuccessful;
 	}
 
@@ -1430,6 +1449,11 @@ public abstract class ScormApplicationServiceImpl implements ScormApplicationSer
 			log.debug("API Terminate (result): " + isSuccessful);
 		}
 
+		if (isSuccessful) {
+			for (ScormLearningEventListener listener : listeners) {
+				listener.onTerminate(sessionBean, scoBean);
+			}
+		}
 		return isSuccessful;
 	}
 
@@ -1452,5 +1476,15 @@ public abstract class ScormApplicationServiceImpl implements ScormApplicationSer
 			service.updateExternalAssessmentScore(context, assessmentExternalId, learnerId, "" + score);
 		}
 	}
+	
+	@Override
+	public void addListener(ScormLearningEventListener listener) {
+		listeners.add(listener);
+	}
+
+	public void setListeners(List<ScormLearningEventListener> listeners) {
+		this.listeners = listeners;
+	}
+	
 
 }
